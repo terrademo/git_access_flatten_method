@@ -14,7 +14,7 @@ locals {
 locals {
 # flatten the members.yaml file data and filter the data
   gh_members_flatten = flatten([for team,team_members in var.gh_members:[
-    for i, member in team_members:{
+    for i, member in team_members[*]:{   # using splat opetator in case the team_members variable is empty
       name = team
       username = member
     } if contains(local.org_members,member) #filter the data with members who are in local.org_members list using contains function
