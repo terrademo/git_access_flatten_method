@@ -8,7 +8,7 @@ locals {
   # this variable stores the members list form the organisation
   org_members = data.github_organization.organisation.members
   
-#   org_mem_map = tomap({for member in local.org_members: member=>member})
+ org_mem_map = tomap({for member in local.org_members: member=>member})
 }
 
 locals {
@@ -17,7 +17,7 @@ locals {
     for i, member in team_members[*]:{   # using splat opetator in case the team_members variable is empty
       name = team
       username = member
-    } if contains(local.org_members,member) #filter the data with members who are in local.org_members list using contains function
+    }  
   ]])
 
   #convert the above tuple to map

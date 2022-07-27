@@ -7,3 +7,5 @@ resource "github_team" "css_teams" {
   description = each.value.description  
   privacy = "closed"  # Must be one of secret or closed
 }
+
+
