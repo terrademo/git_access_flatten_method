@@ -12,13 +12,8 @@ variable "owner"{
 variable "token" {
   type = string
   description = "personel access token"
-  default = "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"
+  default = "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"
 }
 
 
-# output "gh_members_flatten" {
-#   value = module.members.gh_members_flatten
-# }
-# output "gh_members" {
-#   value = module.members.gh_members
-# }
+

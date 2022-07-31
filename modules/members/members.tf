@@ -1,8 +1,3 @@
-# get the organization teams data using the below data source 
-data "github_organization_teams" "all" {}
-
-
-
 
 # adding users to teams 
 resource "github_team_membership" "some_team_membership" {
@@ -10,7 +5,7 @@ resource "github_team_membership" "some_team_membership" {
   for_each = local.gh_members_map
   #required fields are team_id and username
   team_id  = local.team_members["${each.value.name}"].id
-  username = lookup(local.org_mem_map,each.value.username)   # the lookup throws error if not org_mem_map
+  username = lookup(local.org_member_map,each.value.username)   # the lookup throws error if not org_member_map
 }
 
 # resource "null_resource" "validation" {

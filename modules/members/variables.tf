@@ -1,4 +1,4 @@
-#variable to accept members list form root module
+#variable to accept members list form users.yaml
 variable "gh_members" {
   }
 # {
@@ -31,29 +31,57 @@ variable "gh_members" {
 #         ]
 #     }
 
-
-
-
-#get the teams and team members data from organization
 locals {
-  # all_teams variable is a tuple
-  all_teams = data.github_organization_teams.all.teams
+# flatten the members.yaml file data and filter the data
+  gh_members_flatten = flatten([for team,team_members in var.gh_members:[
+    for i, member in team_members[*]:{   # using splat opetator in case the team_members variable is empty
+      name = team
+      username = member
+    }  
+  ]])
 
-  # convert the above variable to a map
-  team_members = {for i, team in local.all_teams:team.name=>team}
-  
+  #convert the above tuple to map
+  gh_members_map = tomap({for i,team in local.gh_members_flatten:"${team.name}_${team.username}"=>team})
 }
-
-
- 
-
-
-
-
-
-output "gh_members_flatten" {
-  value = local.gh_members_flatten
-}
-output "gh_members" {
-  value = var.gh_members
-}
+# gh_members_flatten = [
+#        {
+#            name     = "css-admin-release"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "css-review-finacle"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-admin"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-bot"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-developers"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-developers"
+#            username = "ranjith240198"
+#         },
+#        {
+#            name     = "ib-release-lead"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-reviewer-codefresh"
+#            username = "ranjith240198"
+#         },
+#        {
+#            name     = "ib-reviewer-k8"
+#            username = "RAGHAVA998998"
+#         },
+#        {
+#            name     = "ib-reviewer-k8"
+#            username = "ranjith240198"
+#         },
+#     ]
